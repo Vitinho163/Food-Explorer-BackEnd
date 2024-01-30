@@ -1,0 +1,25 @@
+{
+  "name": "food-explorer-backend",
+  "version": "1.0.0",
+  "description": "Back-End da aplicação Food Explorer",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vitinho163/Food-Explorer-BackEnd.git"
+  },
+  "author": "João Victor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vitinho163/Food-Explorer-BackEnd/issues"
+  },
+  "homepage": "https://github.com/Vitinho163/Food-Explorer-BackEnd#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
