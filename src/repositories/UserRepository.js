@@ -1,17 +1,24 @@
 const knex = require("../database/knex");
 
 class UserRepository {
+  async createUser({ name, email, password }) {
+    const user = await knex("users").insert({ name, email, password }).returning("*");
+
+    return user;
+  }
+
   async findUserByEmail(email) {
     const user = await knex("users").where({ email }).first();
 
     return user;
   }
 
-  async createUser({ name, email, password }) {
-    const user = await knex("users").insert({ name, email, password }).returning("*");
+  async findUserById(id) {
+    const user = await knex("users").where({ id}).first();
 
     return user;
   }
+
 }
 
 module.exports = UserRepository;
