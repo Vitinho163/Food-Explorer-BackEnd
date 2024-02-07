@@ -3,7 +3,8 @@ const FavoritesServices = require('../services/FavoritesServices');
 
 class FavoritesController {
   async create(request, response) {
-    const { user_id, product_id } = request.body;
+    const { product_id } = request.body;
+    const user_id = request.user.id;
 
     const favoritesRepository = new FavoritesRepository();
     const favoritesServices = new FavoritesServices(favoritesRepository);
@@ -31,7 +32,7 @@ class FavoritesController {
   }
 
   async index(request, response) {
-    const { user_id } = request.params;
+    const user_id = request.user.id;
 
     const favoritesRepository = new FavoritesRepository();
     const favoritesServices = new FavoritesServices(favoritesRepository);

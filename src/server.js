@@ -1,12 +1,20 @@
 require('express-async-errors');
+
+const cors = require('cors');
 const express = require("express");
 const routes = require("./routes");
-const AppError = require('./utils/AppError');
+const cookieParser = require('cookie-parser');
 const database = require('./database');
+const AppError = require('./utils/AppError');
 
 const app = express();
-
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
+
 app.use(routes);
 
 database();

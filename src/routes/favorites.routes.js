@@ -1,12 +1,15 @@
 const Router = require("express");
 
 const FavoritesController = require("../controllers/FavoritesController");
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated');
 
 const favoritesController = new FavoritesController();
 
 const favoritesRoutes = Router();
 
-favoritesRoutes.get("/:user_id", favoritesController.index);
+favoritesRoutes.use(ensureAuthenticated);
+
+favoritesRoutes.get("/", favoritesController.index);
 favoritesRoutes.post("/", favoritesController.create);
 favoritesRoutes.delete("/:id", favoritesController.delete);
 

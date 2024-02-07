@@ -36,7 +36,7 @@ class ProductsServices {
 
       products = await this.productsRepository.findProductsByFilter(splittedFilter);
     } else {
-        products = await this.productsRepository.findAllProducts();
+        products = await this.productsRepository.index();
     }
 
     if(!products) {
@@ -46,8 +46,8 @@ class ProductsServices {
     const productsWithIngredients = await Promise.all(products.map(async product => 
       {
 
-        const productsIngredients = await ingredientsRepository.findIngredientsByProductId(product.id);
-        const ingredients = productsIngredients.filter(ingredient => ingredient.product_id === product.id);
+        const productsIngredients = await ingredientsRepository.findIngredientsByProduct(String(product.id));
+        const ingredients = productsIngredients.filter(ingredient => ingredient.product_id === String(product.id));
 
         return {
             ...product,

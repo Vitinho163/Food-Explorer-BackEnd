@@ -3,7 +3,7 @@ const PurchaseOrdersRepository = require('../repositories/PurchaseOrdersReposito
 
 class OrdersController {
   async create(request,response) {
-    const { user_id } = request.params;
+    const user_id = request.user.id;
     const { orderItems } = request.body;
 
     const purchaseOrdersRepository = new PurchaseOrdersRepository();
@@ -33,7 +33,7 @@ class OrdersController {
   }
 
   async index(request, response) {
-    const { user_id } = request.query;
+    const user_id = request.user.id;
 
     const purchaseOrdersRepository = new PurchaseOrdersRepository();
     const ordersServices = new OrdersServices(purchaseOrdersRepository);
