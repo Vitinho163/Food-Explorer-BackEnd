@@ -6,8 +6,11 @@ const routes = require("./routes");
 const cookieParser = require('cookie-parser');
 const database = require('./database');
 const AppError = require('./utils/AppError');
+const uploadConfig = require('./config/upload');
 
 const app = express();
+
+app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({

@@ -16,28 +16,22 @@ class ProductsController {
     })
   }
 
-  // list product by id
-  async show(request, response) {
-    const { id } = request.params;
-
-    const productsRepository = new ProductsRepository();
-    const productsServices = new ProductsServices(productsRepository);
-
-    const product = await productsServices.showProduct(id);
-
-    return response.json(product)
-  }
-
-  // list product by filter
+  // list product by filter or ID
   async index(request, response) {
-    const { filter } = request.query;
 
+    const { id } = request.params;
+    const { filter } = request.query; 
+  
     const productsRepository = new ProductsRepository();
     const productsServices = new ProductsServices(productsRepository);
-
-    const products = await productsServices.listProducts(filter);
-
-    return response.json(products);
+  
+    if (id) {
+      const product = await productsServices.showProduct(id);
+      return response.json(product);
+    } else {
+      const products = await productsServices.listProducts(filter);
+      return response.json(products);
+    }
   }
 
   async update(request, response) {
@@ -66,6 +60,21 @@ class ProductsController {
     return response.status(200).json({
       status: 'sucess',
       message: "Product deleted successfully!"
+    })
+  }
+
+  async uploadImage(request, response) {
+    const { product_id } = request.params;
+    const fileName = request.file.filename;
+
+    const productsRepository = new ProductsRepository();
+    const productsServices = new ProductsServices(productsRepository);
+
+    await productsServices.uploadImage({ product_id, image: fileName })
+
+    response.status(200).json({
+      status: 'sucess',
+      message: 'Image sent successfully!'
     })
   }
 }

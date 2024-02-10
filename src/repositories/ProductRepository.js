@@ -81,6 +81,7 @@ class ProductRepository {
         price: priceInCents,
         description: product.description,
         category: product.category,
+        image: product.image,
         updated_at: knex.fn.now()
       });
 

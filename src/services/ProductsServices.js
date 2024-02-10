@@ -1,5 +1,6 @@
 const AppError = require("../utils/AppError");
 const IngredientsRepository = require("../repositories/IngredientsRepository");
+const DiskStorage = require("../providers/DiskStorage");
 
 class ProductsServices {
   constructor(productsRepository) {
@@ -12,7 +13,9 @@ class ProductsServices {
       throw new AppError("all fields required!")
     }
 
-    await this.productsRepository.createProduct({ name, price, description, category, ingredients });
+    const productId = await this.productsRepository.createProduct({ name, price, description, category, ingredients });
+
+    return productId;
   }
 
   async showProduct(id) {
@@ -34,7 +37,7 @@ class ProductsServices {
     if(filter) {
       const splittedFilter = filter.split(",").map(item => item.trim());
 
-      products = await this.productsRepository.findProductsByFilter(splittedFilter);
+      products = await this.productsRepository.findProductByFilter(splittedFilter);
     } else {
         products = await this.productsRepository.index();
     }
@@ -59,7 +62,7 @@ class ProductsServices {
 
   }
 
-  async updateProduct({ id, name, price, description, category, ingredients}) {
+  async updateProduct({ id, name, price, description, category, ingredients, image}) {
     const product = await this.productsRepository.findProductById(id);
 
     if(!product) {
@@ -74,12 +77,14 @@ class ProductsServices {
     product.price = price ?? product.price;
     product.description = description ?? product.description;
     product.category = category ?? product.category;
+    product.image = image ?? product.image;
 
     const updatedProduct = {
       name: product.name,
       price: product.price,
       description: product.description,
-      category: product.category
+      category: product.category,
+      image: product.image
     }
 
     await this.productsRepository.updateProduct({
@@ -93,6 +98,25 @@ class ProductsServices {
 
   async deleteProduct(id) {
     await this.productsRepository.deleteProduct(id);
+  }
+
+  async uploadImage({ product_id, image}) {
+    const diskStorage = new DiskStorage();
+
+    const product = await this.productsRepository.findProductById(product_id);
+
+    if(!product) {
+      throw new AppError("Product not found!");
+    }
+
+    if(product.image) {
+      await diskStorage.deleteFile(product.image);
+    }
+
+    const filename = await diskStorage.saveFile(image);
+    product.image = filename;
+
+    await this.updateProduct({ id: product_id, image: product.image });
   }
 }
 

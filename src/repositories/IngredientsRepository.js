@@ -29,10 +29,10 @@ class IngredientsRepository {
         "products.category",
         "products.image"
       ])
-      .whereIn("name", filter)
+      .whereIn("products.name", filter)
       .innerJoin("products", "products.id", "ingredients.product_id")
       .groupBy("products.id")
-      .orberby("products.name");
+      .orderBy("products.name");
 
       return ingredients;
     } catch (error) {
