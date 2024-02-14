@@ -13,6 +13,10 @@ class ProductsServices {
       throw new AppError("all fields required!")
     }
 
+    if(category !== "food" && description !== 'drink' && description !== "desert") {
+      throw new AppError("Category Invalid")
+    }
+
     const productId = await this.productsRepository.createProduct({ name, price, description, category, ingredients });
 
     return productId;
