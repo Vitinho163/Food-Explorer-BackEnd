@@ -1,3 +1,5 @@
+const ProductsRepository = require('../repositories/ProductRepository');
+const ProductsServices = require('../services/ProductsServices');
 const AppError = require("../utils/AppError");
 
 class FavoritesServices {
@@ -10,6 +12,15 @@ class FavoritesServices {
     //Check if you provided the user ID and product ID.
     if(!user_id || !product_id) {
       throw new AppError("Error while favoriting the product. Please provide the user ID and product ID.")
+    }
+
+    const productsRepository = new ProductsRepository();
+    const productsServices = new ProductsServices(productsRepository);
+
+    const product = await productsServices.showProduct(product_id);
+
+    if(!product) {
+      throw new AppError("Product not found!")
     }
 
     const favoriteExists = await this.favoritesRepository.findFavoriteByProductId({ product_id });
@@ -29,6 +40,12 @@ class FavoritesServices {
       throw new AppError("Provide the product ID in the favorites list.")
     }
 
+    const favoriteExists = await this.favoritesRepository.findFavoriteByID(id)
+
+    if(favoriteExists.length === 0) {
+      throw new AppError("This favorite does not exist")
+    }
+
     await this.favoritesRepository.deleteFavorite(id);
 
     return;
@@ -40,6 +57,10 @@ class FavoritesServices {
     }
 
     const favorites = await this.favoritesRepository.listFavorites(user_id);
+
+    if(favorites.length === 0) {
+      throw new AppError("No favorites found for this user.")
+    }
 
     return favorites;
   }

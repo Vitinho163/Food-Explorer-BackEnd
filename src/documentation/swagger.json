@@ -751,6 +751,253 @@
           }
         }
       }
+    },
+    "/favorites" : {
+      "post": {
+        "summary": "Add product to list favorites",
+        "description": "Endpoint to add product to list favorites",
+        "tags": ["favorites"],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "product_id":{
+                    "type": "integer",
+                    "example": 2
+                  }
+                },
+                "required":["product_id"]
+              }
+            }
+          }
+        },
+        "responses":{
+          "201": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product successfully added to the favorites list!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingFields": {
+                    "value": {
+                      "status": "error",
+                      "message": "Error while favoriting the product. Please provide the user ID and product ID."
+                    }
+                  },
+                  "ProductNotFound": {
+                    "value": {
+                      "status": "error",
+                      "message": "Product not found!"
+                    }
+                  },
+                  "favoriteExists": {
+                    "value": {
+                      "status": "error",
+                      "message": "This product is already in the favorites list!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List favoritos",
+        "description": "Endpoint to list favorites",
+        "tags": ["favorites"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": "5"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Salada Ravanello"
+                      },
+                      "image": {
+                        "type": ["string", "null"],
+                        "example": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example":"No favorites found for this user."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorites{id}" : {
+      "delete": {
+        "summary": "Delete product to list favorite",
+        "description": "Endpoint to delete product in list favorites",
+        "tags": ["favorites"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID product in list favorites",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully removed product from favorites!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+             "content": {
+              "application/json":{
+                "examples":{
+                  "missingID": {
+                    "value": {
+                      "status": "error",
+                      "message": "Provide the product ID in the favorites list."
+                    }
+                  },
+                  "FavoriteNotExist": {
+                    "value": {
+                      "status": "error",
+                      "message": "This favorite does not exist"
+                    }
+                  }
+                }
+              }
+             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
   }

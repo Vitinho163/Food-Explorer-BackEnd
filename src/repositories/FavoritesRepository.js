@@ -29,6 +29,12 @@ class FavoritesRepository {
 
     return favorite;
   }
+
+  async findFavoriteByID(id) {
+    const favorite = await knex("favorites").where({ id: id });
+
+    return favorite;
+  }
 }
 
 module.exports = FavoritesRepository;
