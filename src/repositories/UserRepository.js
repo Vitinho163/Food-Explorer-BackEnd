@@ -1,10 +1,15 @@
 const knex = require("../database/knex");
 
 class UserRepository {
-  async createUser({ name, email, password }) {
-    const user = await knex("users").insert({ name, email, password }).returning("*");
+  async createUser({ name, email, password, isAdmin }) {
 
-    return user;
+    if(isAdmin) {
+      const user = await knex("users").insert({ name, email, password, isAdmin }).returning("*");
+      return user;
+    } else {
+      const user = await knex("users").insert({ name, email, password }).returning("*");
+      return user;
+    }
   }
 
   async findUserByEmail(email) {

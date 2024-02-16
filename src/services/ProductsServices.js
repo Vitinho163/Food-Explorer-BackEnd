@@ -101,6 +101,12 @@ class ProductsServices {
   }
 
   async deleteProduct(id) {
+    const product = await this.productsRepository.findProductById(id);
+
+    if(!product) {
+      throw new AppError("Product not found!");
+    }
+
     await this.productsRepository.deleteProduct(id);
   }
 

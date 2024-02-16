@@ -5,7 +5,6 @@ const authConfig = require('../config/auth');
 function ensureAuthenticated(request, response, next) {
   const authHeader = request.headers;
   
-  
   if(!authHeader.cookie) {
     throw new AppError("JWT token not found", 401);
   }

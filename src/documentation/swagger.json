@@ -1,0 +1,757 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Food Explorer API Documentation",
+    "description": "API for managing restaurant operations, user management, and order processing in Food Explorer application.",
+    "contact": {
+      "name": "João Victor",
+      "email": "victor.jvsb18@gmail.com",
+      "url": "https://github.com/Vitinho163"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Register User",
+        "description": "This endpoint is responsible for registering a new user in the system.",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "isAdmin": {
+                    "type": "boolean"
+                  }
+                }, 
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ]
+              }, "examples": {
+                "Admin": {
+                  "value": {
+                    "name": "João Victor",
+                    "email": "victor@email.com",
+                    "password": "123",
+                    "isAdmin": true
+                  }
+                },
+                "User": {
+                  "value": {
+                    "name": "Victor Souza",
+                    "email": "souza@email.com",
+                    "password": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingName": {
+                    "value": {
+                      "status": "error",
+                      "message": "Name is required"
+                    }
+                  },
+                  "missingFields": {
+                    "value": {
+                      "status": "error",
+                      "message": "Fill in all the fields!"
+                    }
+                  },
+                  "emailExists": {
+                    "value": {
+                      "status": "error",
+                      "message": "Email already registered"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "5"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "João Victor"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "victor@email.com"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "$2a$12$mZ2UevONQNi0uI2l8Mk5XeOonPBXl/MU88h2ATauuLsKrn2R4pfga"
+                    },
+                    "isAdmin": {
+                      "type": "integer",
+                      "example": "1"
+                    }, 
+                    "created_at": {
+                      "type": "string",
+                      "example": "2024-02-15 20:59:47"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions" : {
+      "post": {
+        "summary": "Create Session",
+        "description": "Endpoint to authenticate and generate JWT token.",
+        "tags": ["Users", "Sessions"],
+        "requestBody": {
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "victor@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Incorrect email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Incorrect email or password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+
+                        "id": {
+                          "type": "integer",
+                          "example": "5"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "João Victor"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "victor@email.com"
+                        },
+                        "password": {
+                          "type": "string",
+                          "example": "$2a$12$mZ2UevONQNi0uI2l8Mk5XeOonPBXl/MU88h2ATauuLsKrn2R4pfga"
+                        },
+                        "isAdmin": {
+                          "type": "integer",
+                          "example": "1"
+                        }, 
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-02-15 20:59:47"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjoxLCJpYXQiOjE3MDc5MzYwMzMsImV4cCI6MTcwODAyMjQzMywic3ViIjoiMSJ9.uuzwEDub4odMxxDHAnsX6fHUE6cqNQTw_d_UBm2l5vI"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/" : {
+      "post": {
+        "summary": "Create Product",
+        "description": "Endpoint to create a new product in the system.",
+        "tags": ["Products"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Salada Ravanello"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "25"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Rabanetes, folhas verdes e molho agridoce salpicados com gergelim. O pão naan dá um toque especial."
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "food"
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["pão", "tomate", "hamburguer"]
+                  }
+                },
+                "required": [
+                  "name",
+                  "price",
+                  "description",
+                  "category",
+                  "ingredients"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    }, 
+                    "message": {
+                      "type": "string",
+                      "example": "successfully created product"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "missingFields": {
+                    "value": {
+                      "status": "error",
+                      "message": "all fields required!"
+                    }
+                  },
+                  "categoryNotSuported": {
+                    "value": {
+                      "status": "error",
+                      "message": "Category Invalid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Index || Show Product by filter",
+        "description": "Endpoint to retrieve product information based on a filter criteria. This endpoint allows retrieving multiple products that match the specified filter. If no filter is provided, the endpoint returns all products.",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter criteria to list products (optional)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No products found!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}" : {
+      "get": {
+        "summary": "Show Product by ID",
+        "description": "Endpoint to retrieve product information based on its unique identifier (ID). This endpoint returns the product details for the specified ID.",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "required": [
+          "id"
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "product not found!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Product",
+        "description": "Endpoint to update an existing product in the system. This endpoint allows modifying the information of a specific product identified by its ID.",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of product",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json":{
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Salada Ravanello"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "25"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Rabanetes, folhas verdes e molho agridoce salpicados com gergelim. O pão naan dá um toque especial."
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "food"
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["pão", "tomate", "hamburguer"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product updated successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ProductNotFound": {
+                    "value": {
+                      "status": "error",
+                      "message": "Product not found!"
+                    }
+                  },
+                  "categoryNotSuported": {
+                    "value": {
+                      "status": "error",
+                      "message": "We do not support this category!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Product",
+        "description": "Endpoint to delete an existing product in the system.",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of product",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product deleted successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties":{
+                    "status": {
+                        "type": "string",
+                        "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product not found!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/image/{id}" : {
+      "put": {
+        "summary": "Update Image for Product",
+        "description": "Endpoint to update the image of a product",
+        "tags": ["Files"],
+        "parameters":[
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ], 
+        "requestBody": {
+          "content":{
+            "multipart/form-data": {
+              "schema": {
+                "type":"object",
+                "properties":{
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Image to upload for the product"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "image"
+        ],
+        "responses":{
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    }, 
+                    "message": {
+                      "type": "string",
+                      "example": "Image sent successfully!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ProductNotFound": {
+                    "value": {
+                      "status": "error",
+                      "message": "Product not found!"
+                    }
+                  },
+                  "ImageRequired": {
+                    "value": {
+                      "status": "error",
+                      "message": "Image file is required."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

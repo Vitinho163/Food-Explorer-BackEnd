@@ -6,7 +6,7 @@ class UserService {
     this.userRepository = UserRepository;
   }
 
-  async createUser({ name, email, password }) {
+  async createUser({ name, email, password, isAdmin }) {
     if(!name || !email || !password ) {
       throw new AppError('Fill in all the fields!');
     }
@@ -19,9 +19,15 @@ class UserService {
 
     const hashedPassword = await hash(password, 12);
 
-    const userCreated = await this.userRepository.createUser({ name, email, password: hashedPassword });
+    if(isAdmin) {
+      const userCreated = await this.userRepository.createUser({ name, email, password: hashedPassword, isAdmin });
+      return userCreated;
+    } else {
+      const userCreated = await this.userRepository.createUser({ name, email, password: hashedPassword, isAdmin });
+      return userCreated;
+    }
 
-    return userCreated;
+    
   }
 }
 

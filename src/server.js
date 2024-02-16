@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const database = require('./database');
 const AppError = require('./utils/AppError');
 const uploadConfig = require('./config/upload');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./documentation/swagger.json');
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use(cors({
   origin: '*',
   credentials: true
 }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use(routes);
 

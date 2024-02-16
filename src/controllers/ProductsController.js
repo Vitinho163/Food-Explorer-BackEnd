@@ -1,5 +1,6 @@
 const ProductsRepository = require('../repositories/ProductRepository');
 const ProductsServices = require('../services/ProductsServices');
+const AppError = require('../utils/AppError');
 
 class ProductsController {
   async create(request, response) {
@@ -26,6 +27,7 @@ class ProductsController {
     const productsServices = new ProductsServices(productsRepository);
   
     if (id) {
+      console.log(id)
       const product = await productsServices.showProduct(id);
       return response.json(product);
     } else {
@@ -65,6 +67,11 @@ class ProductsController {
 
   async uploadImage(request, response) {
     const { product_id } = request.params;
+
+    if(!request.file) {
+      throw new AppError("Image file is required.")
+    }
+
     const fileName = request.file.filename;
 
     const productsRepository = new ProductsRepository();

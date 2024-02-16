@@ -4,7 +4,7 @@ const UserServices = require("../services/UserService");
 
 class UsersController {
   async create(request, response) {
-    const { name, email, password } = request.body;
+    const { name, email, password, isAdmin } = request.body;
 
     const userRepository = new UserRepository();
     const userServices = new UserServices(userRepository);
@@ -13,7 +13,7 @@ class UsersController {
       throw new AppError('Name is required', 400);
     }
 
-    const userCreated = await userServices.createUser({ name, email, password });
+    const userCreated = await userServices.createUser({ name, email, password, isAdmin });
 
     response.status(201).json(userCreated)
   }
