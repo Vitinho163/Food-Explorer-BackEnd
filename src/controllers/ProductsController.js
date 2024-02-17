@@ -21,17 +21,22 @@ class ProductsController {
   async index(request, response) {
 
     const { id } = request.params;
-    const { filter } = request.query; 
+    let { filter, ingredient } = request.query; 
   
     const productsRepository = new ProductsRepository();
     const productsServices = new ProductsServices(productsRepository);
   
     if (id) {
-      console.log(id)
       const product = await productsServices.showProduct(id);
       return response.json(product);
     } else {
-      const products = await productsServices.listProducts(filter);
+      let products;
+
+      if(ingredient) {
+        filter = `ingredient:${ingredient}`;
+      }
+
+      products = await productsServices.listProducts(filter);
       return response.json(products);
     }
   }

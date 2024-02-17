@@ -57,6 +57,16 @@ class ProductRepository {
     return [...filteredProducts, ...filteredIngredients];
   }
 
+  async findProductsByIngredients(ingredinets) {
+    const products = await knex('products')
+      .join('ingredients', 'products.id', 'ingredients.product_id')
+      .whereIn('ingredients.name', ingredinets)
+      .distinct('products.id')
+      .select('products.*');
+
+    return products;
+  }
+
   async index() {
     const products = await knex("products").orderBy("created_at");
 

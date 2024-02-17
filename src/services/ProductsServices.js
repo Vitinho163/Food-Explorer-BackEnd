@@ -33,15 +33,24 @@ class ProductsServices {
   }
 
   async listProducts(filter) {
-
     const ingredientsRepository = new IngredientsRepository();
 
     let products;
 
     if(filter) {
-      const splittedFilter = filter.split(",").map(item => item.trim());
-
-      products = await this.productsRepository.findProductByFilter(splittedFilter);
+      // Check if the filter is an ingredient filter
+      if (filter.startsWith('ingredient:')) {
+        const ingredientName = filter.slice('ingredient:'.length).trim();
+        // find ingredient by name
+        const ingredients = await ingredientsRepository.findIngredientsByName(ingredientName);
+        // filter products containing the found ingredients.
+        products = await this.productsRepository.findProductsByIngredients(ingredients.map(ingredient => ingredient.name))
+      } else {
+        // find product by name
+        const splittedFilter = filter.split(",").map(item => item.trim());
+  
+        products = await this.productsRepository.findProductByFilter(splittedFilter);
+      }
     } else {
         products = await this.productsRepository.index();
     }

@@ -54,6 +54,17 @@ class IngredientsRepository {
     await knex("ingredients").where({ product_id: id }).del();
     return;
   }
+
+  async findIngredientsByName(ingredientName) {
+    try {
+      const ingredient = await knex("ingredients").where("name", ingredientName)
+  
+      return ingredient;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
 };
 
 module.exports = IngredientsRepository;
