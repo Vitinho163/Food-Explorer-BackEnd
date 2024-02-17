@@ -136,7 +136,7 @@
       "post": {
         "summary": "Create Session",
         "description": "Endpoint to authenticate and generate JWT token.",
-        "tags": ["Users", "Sessions"],
+        "tags": ["Sessions"],
         "requestBody": {
           "content":{
             "application/json":{
@@ -756,7 +756,7 @@
       "post": {
         "summary": "Add product to list favorites",
         "description": "Endpoint to add product to list favorites",
-        "tags": ["favorites"],
+        "tags": ["Favorites"],
         "requestBody":{
           "content":{
             "application/json":{
@@ -846,7 +846,7 @@
       "get": {
         "summary": "List favoritos",
         "description": "Endpoint to list favorites",
-        "tags": ["favorites"],
+        "tags": ["Favorites"],
         "responses": {
           "200": {
             "description": "OK",
@@ -922,7 +922,7 @@
       "delete": {
         "summary": "Delete product to list favorite",
         "description": "Endpoint to delete product in list favorites",
-        "tags": ["favorites"],
+        "tags": ["Favorites"],
         "parameters": [
           {
             "name": "id",
@@ -975,6 +975,452 @@
                 }
               }
              }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders" : {
+      "get": {
+        "summary": "List all orders",
+        "description": "Endpoint to retrieve a list of orders. If the user is an administrator, all orders are displayed. If the user is a regular user, only their orders are displayed.",
+        "tags":["Orders"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "examples":{
+                  "noOrders": {
+                    "value": {
+                      "status": "sucess",
+                      "message": "There are no orders"
+                    }
+                  },
+                  "sucessUser": {
+                    "value": {
+                      "status": "sucess",
+                      "message": [
+                        {
+                          "id": 1,
+                          "user_id": "1",
+                          "status": "pending",
+			                    "created_at": "2024-02-16 23:49:28",
+			                    "updated_at": "2024-02-16 23:49:28",
+                          "orderItems": [
+                            {
+                              "id": 5,
+                              "name": "X Ravanello",
+                              "price": 2500,
+                              "quantity": 2,
+                              "image": "247fe678a5d2878ef566-JV.png"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "sucessAdmin": {
+                    "value": {
+                      "status": "sucess",
+                      "message": [
+                        {
+                          "id": 2,
+                          "user_id": "2",
+                          "status": "pending",
+                          "created_at": "2024-02-16 23:51:49",
+                          "updated_at": "2024-02-16 23:51:49",
+                          "orderItems": [
+                            {
+                              "id": 6,
+                              "name": "Salada Ravanello",
+                              "price": 2500,
+                              "quantity": 2,
+                              "image": null
+                            }
+                          ]
+                        },
+                        {
+                          "id": 1,
+                          "user_id": "1",
+                          "status": "pending",
+                          "created_at": "2024-02-16 23:49:28",
+                          "updated_at": "2024-02-16 23:49:28",
+                          "orderItems": [
+                            {
+                              "id": 5,
+                              "name": "X Ravanello",
+                              "price": 2500,
+                              "quantity": 2,
+                              "image": "247fe678a5d2878ef566-JV.png"
+                            }
+                          ]
+                        }
+                      ]
+                    }                    
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Order",
+        "description": "Endpoint to create a new order in the system.",
+        "tags": ["Orders"],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "orderItems": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "product_id": {
+                          "type": "integer",
+                          "example": 6
+                        },
+                        "Unit_price": {
+                          "type": "integer",
+                          "example": 2500
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "201": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Order created successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content":{
+              "application/json":{
+                "examples":{
+                  "missingData": {
+                    "value": {
+                      "status": "error",
+                      "message": "Provide all the data."
+                    }
+                  },
+                  "OrderAlreadyExistsError" : {
+                    "value": {
+                      "status": "error",
+                      "message": "This order already exists."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}" : {
+      "get": {
+        "summary": "Order Details",
+        "description": "Endpoint to retrieve details of a specific order. If the user is an admin, they can view orders for any user. If the user is a regular user, they can only view their own orders.",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID Order",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses":{
+          "201": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "order": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 10
+                        },
+                        "user_id": {
+                          "type": "string",
+                          "example": "1"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "pending"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2024-02-17 01:23:08"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2024-02-17 01:23:08"
+                        },
+                        "orderItems": {
+                          "type":"array",
+                          "items":{
+                            "type":"object",
+                            "properties":{
+                              "id": {
+                                "type": "integer",
+                                "example": 5
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "X Ravanello"
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 2500
+                              },
+                              "quantity": {
+                                "type": "integer",
+                                "example": 2
+                              },
+                              "image": {
+                                "type": ["string", "null"],
+                                "example": "247fe678a5d2878ef566-JV.png"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You cannot view orders that do not belong to you!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "JWT token not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "update status",
+        "description": "Endpoint to update the status of an order.",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID Order",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "status": {
+                    "type": "string",
+                    "example": "preparing"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "status": {
+                      "type": "string",
+                      "example": "sucess"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Order successfully updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The request was invalid.",
+            "content":{
+              "application/json":{
+                "examples":{
+                  "permission": {
+                    "value": {
+                      "status": "error",
+                      "message": "You don't have permission"
+                    }
+                  },
+                  "notSpecified": {
+                    "value": {
+                      "status": "error",
+                      "message": "Order ID not specified"
+                    }
+                  },
+                  "notFound": {
+                    "value": {
+                      "status": "error",
+                      "message": "Order not found"
+                    }
+                  },
+                  "missingStatus": {
+                    "value": {
+                      "status": "error",
+                      "message": "Status not specified"
+                    }  
+                  },
+                  "statusUnsupported": {
+                    "value": {
+                      "status": "error",
+                      "message": "Invalid status"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized",

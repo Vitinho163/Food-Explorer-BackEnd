@@ -9,22 +9,23 @@ class OrdersController {
     const purchaseOrdersRepository = new PurchaseOrdersRepository();
     const ordersServices = new OrdersServices(purchaseOrdersRepository);
 
-    await ordersServices.createProduct({ user_id, orderItems });
+    await ordersServices.createProduct({ user_id, itemsOrder: orderItems });
 
     return response.status(201).json({
       status: "sucess",
-      message: "Product created successfully"
+      message: "Order created successfully"
     });
   }
 
   async update(request, response) {
+    const user_id = request.user.id;
     const { id } = request.params;
     const { status } = request.body;
 
     const purchaseOrdersRepository = new PurchaseOrdersRepository();
     const ordersServices = new OrdersServices(purchaseOrdersRepository);
 
-    await ordersServices.updateOrder({ id, status });
+    await ordersServices.updateOrder({ id, status, user_id });
 
     return response.status(200).json({
       status: "Sucess",
@@ -54,12 +55,13 @@ class OrdersController {
   }
 
   async show(request, response) {
+    const user_id = request.user.id;
     const { id } = request.params;
 
     const purchaseOrdersRepository = new PurchaseOrdersRepository();
     const ordersServices = new OrdersServices(purchaseOrdersRepository);
 
-    const order = await ordersServices.listOrderById({ id}) 
+    const order = await ordersServices.listOrderById({ id, user_id}) 
 
     return response.status(200).json({
       status: "sucess",
