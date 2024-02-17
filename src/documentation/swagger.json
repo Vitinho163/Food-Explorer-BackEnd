@@ -346,15 +346,91 @@
         "tags": ["Products"],
         "parameters": [
           {
-            "name": "filter",
+            "name": "name",
             "in": "query",
-            "description": "Filter criteria to list products (optional)",
+            "description": "Filter to search for products by name. (optional)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ingredient",
+            "in": "query",
+            "description": "Filter to search for products by ingredient. (optional)",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "id": {
+                      "type": "integer",
+                      "example": 8
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Salada Ravanello"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Rabanetes, folhas verdes e molho agridoce salpicados com gergelim. O pão naan dá um toque especial."
+                    },
+                    "price": {
+                      "type": "integer",
+                      "example": "2500"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "food"
+                    },
+                    "image": {
+                      "type": ["string", "null"],
+                      "example": null
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "example": "2024-02-15 20:59:47"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "example": "2024-02-15 20:59:47"
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items":{
+                        "type":"object",
+                        "properties":{
+                          "id": {
+                            "type":"integer",
+                            "example": "34"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "tomate"
+                          },
+                          "product_id": {
+                            "type": "string",
+                            "example": "8"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "example":"2024-02-15 20:59:47"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized",
             "content": {

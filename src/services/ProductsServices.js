@@ -55,7 +55,7 @@ class ProductsServices {
         products = await this.productsRepository.index();
     }
 
-    if(!products) {
+    if(products.length == 0) {
         throw new AppError("No products found!");
     }
 

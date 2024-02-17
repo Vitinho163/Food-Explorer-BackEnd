@@ -54,4 +54,8 @@ describe('ProductsServices', () => {
 
     expect(productFound).toBeUndefined();
   });
+
+  it("should throw an error when no product is found", async() => {
+    await expect(productsServices.listProducts("Nonexistent Product")).rejects.toEqual(new AppError("No products found!"));
+  });
 });

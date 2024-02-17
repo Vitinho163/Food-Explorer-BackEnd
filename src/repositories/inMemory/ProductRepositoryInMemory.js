@@ -6,14 +6,14 @@ class ProductRepositoryInMemory {
     this.id = Math.floor(Math.random() * 1000) + 1
   }
 
-  async createProduct({ title, price, description, category, ingredients }) {
+  async createProduct({ name, price, description, category, ingredients }) {
     const ingredientsRepositoryInMemory = new IngredientsRepositoryInMemory()
 
     const createdIngredients = await ingredientsRepositoryInMemory.createIngredients(ingredients);
 
     const product = {
       id: this.id,
-      title,
+      name,
       price,
       description,
       category,
@@ -31,9 +31,33 @@ class ProductRepositoryInMemory {
     return product;
   }
 
+  async findProductByFilter(filter) {
+    const filteredProducts = this.products.filter(product => {
+      const productNameMatches = product.title && filter.some(keyword => product.name.toLowerCase().includes(keyword.toLowerCase()));
+
+      const productIngredientsMatch = product.createdIngredients.some(ingredient =>
+        filter.some(keyword => ingredient.name.toLowerCase().includes(keyword.toLowerCase()))
+      );
+
+      return productNameMatches || productIngredientsMatch;
+    });
+
+    return filteredProducts;
+  }
+
   async deleteProduct(id) {
     this.products = this.products.filter(product => product.id !== id);
   }
+
+  async findProductsByIngredients(ingredients) {
+  const foundProducts = this.products.filter(product => {
+    return ingredients.every(ingredient => {
+      return product.createdIngredients.includes(ingredient);
+    });
+  });
+
+  return foundProducts;
+}
 }
 
 module.exports = ProductRepositoryInMemory;
