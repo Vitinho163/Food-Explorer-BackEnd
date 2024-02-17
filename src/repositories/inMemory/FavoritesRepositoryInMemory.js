@@ -21,6 +21,10 @@ class FavoritesRepositoryInMemory {
   async findFavoriteByProductId({ product_id }) {
     return this.favorites.find(favorite => favorite.product_id === product_id);
   }
+
+  async findFavoriteByID(id) {
+    return this.favorites.find(favorite => favorite.id === id);
+  }
 }
 
 module.exports = FavoritesRepositoryInMemory;

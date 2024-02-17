@@ -12,8 +12,8 @@ describe("OrdersServices", () => {
   });
 
   it("should be able to create a new order", async() => {
-    const  order = {
-      user_id: "5002",
+    const user_id = 5;
+    const itemsOrder = {
       orderItems: [
         {
           product_id: "1",
@@ -26,9 +26,9 @@ describe("OrdersServices", () => {
           Unit_price: 2500
         }
       ]
-    }
+    };
 
-    expect(await ordersServices.createProduct(order)).toBeUndefined();
+    expect(await ordersServices.createProduct({ user_id, itemsOrder: itemsOrder.orderItems})).toBeUndefined();
   });
 
   it("should not be able to create a new order if the user_id is not present", async() => {
@@ -53,7 +53,7 @@ describe("OrdersServices", () => {
   it("should not be able to create a new order if there are missing data", async() => {
     const order = {
       user_id: "5",
-      orderItems: [
+      itemsOrder: [
         {
           product_id: "1"
         }

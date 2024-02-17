@@ -1,8 +1,18 @@
+const ProductsRepository = require('../repositories/ProductRepository');
+const ProductsServices = require('../services/ProductsServices');
 const knex = require('../database/knex');
 
 class FavoritesRepository {
   async createFavorite({ user_id, product_id }) {
       const favorite = await knex('favorites').insert({ user_id, product_id });
+
+      const productsRepository = new ProductsRepository();
+      const productsServices = new ProductsServices(productsRepository);
+      const product = await productsServices.showProduct(product_id);
+
+      if(!product) {
+        throw new AppError("Product not found!")
+      }
 
       return favorite;
   }
