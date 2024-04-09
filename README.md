@@ -17,6 +17,7 @@ Food Explorer - Back-End is a **[Restful API](https://aws.amazon.com/what-is/res
 - [Project Structure](#project_structure_en)
 - [Installation](#installation-en)
 - [Unit Tests](#unit-tests-en)
+- [Deploy](#deploy-en)
 - [Route Documentation](#route-documentation-en)
 - [Author](#author-en)
 
@@ -105,6 +106,17 @@ To run unit tests, use the command:
 npm run test
 ```
 
+## 💻 deploy <a name = "deploy-en"></a>
+
+This API was hosted directly on Render.
+
+The deployment can be accessed at the address: 
+```
+https://food-explorer-bhyu.onrender.com/
+```
+
+>Note: As it is hosted on a free service, the application 'hibernates' after 15 minutes of inactivity. If you are trying to access the site and the BackEnd does not respond, just wait, as it will be 'initializing' the services.
+
 ## 📖 Route Documentation <a name = "route-documentation-en"></a>
 
 The documentation for all routes is available at:
@@ -133,6 +145,7 @@ Food Explorer - Back-End é uma **[API Restful](https://aws.amazon.com/pt/what-i
 - [Estrutura do Projeto](#estrutura-do-projeto-pt)
 - [Instalação](#instalacao-pt)
 - [Testes Unitários](#testes-unitarios-pt)
+- [Deploy](#deploy-pt)
 - [Documentação das Rotas](#documentacao-das-rotas-pt)
 - [Autor](#autor-pt)
 
@@ -219,6 +232,16 @@ Para executar os testes unitários, utilize o comando:
 npm run test
 ```
 
+## 💻 Deploy <a name = "deploy-pt"></a>
+
+Esta API foi hospedada diretamente no Render.
+
+O deployment pode ser acessado no seguinte endereço:
+```
+https://food-explorer-bhyu.onrender.com/
+```
+
+>Nota: Como está hospedado em um serviço gratuito, a aplicação 'hiberna' após 15 minutos de inatividade. Se você estiver tentando acessar o site e o BackEnd não responder, basta aguardar, pois ele estará 'inicializando' os serviços.
 
 ## 📖 Documentação das Rotas <a name = "documentacao-das-rotas-pt"></a>
 
