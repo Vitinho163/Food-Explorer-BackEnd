@@ -18,7 +18,11 @@ class FavoritesRepository {
   }
 
   async deleteFavorite(id) {
-    await knex("favorites").where({ product_id: id }).del()
+    try {
+      await knex("favorites").where({ product_id: id}).del()
+    } catch (error) {
+      throw new AppError("This favorite does not exist");
+    }
   }
 
   async listFavorites(user_id) {

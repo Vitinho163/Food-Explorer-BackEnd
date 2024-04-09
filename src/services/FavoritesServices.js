@@ -29,12 +29,6 @@ class FavoritesServices {
       throw new AppError("Provide the product ID in the favorites list.")
     }
 
-    const favoriteExists = await this.favoritesRepository.findFavoriteByID(id)
-
-    if(favoriteExists.length === 0) {
-      throw new AppError("This favorite does not exist")
-    }
-
     await this.favoritesRepository.deleteFavorite(id);
 
     return;
