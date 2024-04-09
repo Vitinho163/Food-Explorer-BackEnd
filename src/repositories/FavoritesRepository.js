@@ -18,7 +18,7 @@ class FavoritesRepository {
   }
 
   async deleteFavorite(id) {
-    await knex("favorites").where({ id }).del()
+    await knex("favorites").where({ product_id: id }).del()
   }
 
   async listFavorites(user_id) {
