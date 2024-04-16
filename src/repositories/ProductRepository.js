@@ -18,6 +18,8 @@ class ProductRepository {
     }).returning("id");
 
     await ingredientsRepository.createIngredient({ ingredients, product_id: product.id})
+
+    return product.id
   }
 
   async findProductById(id) {

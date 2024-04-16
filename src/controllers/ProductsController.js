@@ -9,11 +9,13 @@ class ProductsController {
     const productsRepository = new ProductsRepository();
     const productsServices = new ProductsServices(productsRepository);
     
-    await productsServices.createProduct({ name, price, description, category, ingredients });
+    const productId = await productsServices.createProduct({ name, price, description, category, ingredients });
+    console.log(productId)
 
     response.status(201).json({
       status: "sucess",
-      message: "successfully created product"
+      message: "teste",
+      productId: productId
     })
   }
 
