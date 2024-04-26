@@ -13,7 +13,7 @@ class ProductsServices {
       throw new AppError("all fields required!")
     }
 
-    if(category !== "food" && description !== 'drink' && description !== "desert") {
+    if(category !== "food" && description !== 'drink' && description !== "dessert") {
       throw new AppError("Category Invalid")
     }
 
