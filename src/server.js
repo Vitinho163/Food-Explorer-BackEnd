@@ -17,7 +17,7 @@ app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', "https://food-explorer-app.vercel.app"],
   credentials: true
 }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
