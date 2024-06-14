@@ -1,15 +1,18 @@
 const knex = require('../database/knex');
 const ItemOrdersRepository = require('./ItemOrdersRepository');
+const AddressOrdersRepository = require('./AddressOrdersRepository');
 
 class PurchaseOrdersRepository {
-  async createProduct({ user_id, orderItems }) {
+  async createProduct({ user_id, orderItems, addressOrder }) {
     const itemOrdersRepository = new ItemOrdersRepository();
+    const addressOrdersRepository = new AddressOrdersRepository();
 
     const [order] = await knex("orders").insert({
       user_id
     }).returning('id');
 
     await itemOrdersRepository.createItemOrder({ order_id: order.id, orderItems });
+    await addressOrdersRepository.createAddressOrder({ order_id: order.id, addressOrder })
 
     return
   }
