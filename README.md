@@ -92,6 +92,7 @@ npm run migrate
 ```
 PORT=
 SECRET_KEY=
+GOOGLE_KEY=
 ```
 
 5. Start the server:
@@ -218,6 +219,7 @@ npm run migrate
 ```
 PORT=
 SECRET_KEY=
+GOOGLE_KEY=
 ```
 
 5. Inicie o servidor:

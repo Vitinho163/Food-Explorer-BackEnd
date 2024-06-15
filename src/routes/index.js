@@ -5,7 +5,7 @@ const productsRoutes = require("./products.routes");
 const favoritesRoutes = require("./favorites.routes");
 const ordersRoutes = require("./orders.routes");
 const sessionsRouter = require('./sessions.routes');
-const searchCep = require('./searchCep.routes')
+const delivery = require('./delivery.routes')
 
 const routes = Router();
 
@@ -14,6 +14,6 @@ routes.use("/products", productsRoutes);
 routes.use("/favorites", favoritesRoutes);
 routes.use("/orders", ordersRoutes);
 routes.use('/sessions', sessionsRouter);
-routes.use('/search_cep', searchCep)
+routes.use('/delivery', delivery)
 
 module.exports = routes;

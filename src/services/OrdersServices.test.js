@@ -28,7 +28,16 @@ describe("OrdersServices", () => {
       ]
     };
 
-    expect(await ordersServices.createProduct({ user_id, itemsOrder: itemsOrder.orderItems})).toBeUndefined();
+    const addressOrder = {
+      street: "Rua 7 de setembro",
+      number: 225,
+      neighborhood: "Proximo Mercado Boa",
+      city: "Franco da Rocha",
+      state: "SP",
+      zipCode: "05555555"
+    }
+
+    expect(await ordersServices.createProduct({ user_id, itemsOrder: itemsOrder.orderItems, addressOrder})).toBeUndefined();
   });
 
   it("should not be able to create a new order if the user_id is not present", async() => {
