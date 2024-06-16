@@ -13,6 +13,7 @@ describe("OrdersServices", () => {
 
   it("should be able to create a new order", async() => {
     const user_id = 5;
+    const shippingValue = 3.50
     const itemsOrder = {
       orderItems: [
         {
@@ -37,7 +38,7 @@ describe("OrdersServices", () => {
       zipCode: "05555555"
     }
 
-    expect(await ordersServices.createProduct({ user_id, itemsOrder: itemsOrder.orderItems, addressOrder})).toBeUndefined();
+    expect(await ordersServices.createProduct({ user_id, itemsOrder: itemsOrder.orderItems, addressOrder, shippingValue})).toBeUndefined();
   });
 
   it("should not be able to create a new order if the user_id is not present", async() => {

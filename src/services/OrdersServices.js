@@ -6,7 +6,7 @@ class OrdersServices {
     this.purchaseOrdersRepository = purchaseOrdersRepository;
   }
 
-  async createProduct({ user_id, itemsOrder, addressOrder}) {
+  async createProduct({ user_id, itemsOrder, addressOrder, shippingValue}) {
     if(!user_id) {
       throw new AppError("User not provided");
     }
@@ -26,11 +26,11 @@ class OrdersServices {
       }
     });
 
-      if(!addressOrder.street || !addressOrder.number || !addressOrder.neighborhood || !addressOrder.city || !addressOrder.state || !addressOrder.zipCode) {
-        throw new AppError("Provide all the data.")
-      }
+    if(!addressOrder.street || !addressOrder.number || !addressOrder.neighborhood || !addressOrder.city || !addressOrder.state || !addressOrder.zipCode || !shippingValue) {
+      throw new AppError("Provide all the data.")
+    }
 
-    await this.purchaseOrdersRepository.createProduct({ user_id, orderItems: itemsOrder, addressOrder });
+    await this.purchaseOrdersRepository.createProduct({ user_id, orderItems: itemsOrder, addressOrder, shippingValue });
 
     return
   }

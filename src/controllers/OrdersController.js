@@ -4,12 +4,12 @@ const PurchaseOrdersRepository = require('../repositories/PurchaseOrdersReposito
 class OrdersController {
   async create(request,response) {
     const user_id = request.user.id;
-    const { orderItems, address } = request.body;
+    const { orderItems, address, shippingValue } = request.body;
 
     const purchaseOrdersRepository = new PurchaseOrdersRepository();
     const ordersServices = new OrdersServices(purchaseOrdersRepository);
 
-    await ordersServices.createProduct({ user_id, itemsOrder: orderItems, addressOrder: address });
+    await ordersServices.createProduct({ user_id, itemsOrder: orderItems, addressOrder: address, shippingValue });
 
     return response.status(201).json({
       status: "sucess",
