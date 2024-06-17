@@ -58,11 +58,13 @@ class PurchaseOrdersRepository {
 
     const order = await knex("orders").where({ id}).first();
 
+    const orderAddress = await knex("order_address").where({ order_id: id }).first();
+
     const orderItems = await listOrdersRepository.listOrderItemsByOrderId(id);
 
-    const orderWithItems = {...order, orderItems};
+    const orderWithInfo = {...order, orderItems, orderAddress};
 
-    return orderWithItems;
+    return orderWithInfo;
   }
 }
 
