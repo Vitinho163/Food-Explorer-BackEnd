@@ -27,6 +27,17 @@ class PaymentsController {
       response.status(500).json({ error: error.message})
     });
   }
+
+  async checkPaymentStatus(request, response) {
+    const { id } = request.params;
+
+    try {
+      const paymentResult = await payment.get({ id })
+      response.json(paymentResult);
+    } catch (error) {
+      response.status(500).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = PaymentsController
